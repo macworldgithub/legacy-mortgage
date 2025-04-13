@@ -6,6 +6,7 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { SERVER_URL } from "../../config";
+import image from "../../../public/pic.jpeg"
 import axios from "axios";
 
 export default function ChatWidget() {
@@ -30,8 +31,8 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${SERVER_URL}/api/chat/ask-bot`, {
-        userQuery: input,
+      const response = await axios.post(`${SERVER_URL}/query`, {
+        query: input,
       });
       setMessages([
         ...newMessages,
@@ -82,7 +83,7 @@ export default function ChatWidget() {
                     msg.sender === "user"
                       ? "hidden"
                       : "block"
-                  }`} src={"https://lcmagentportal.appspot.com/avatar/serve?id=6520621183205376"}/>
+                  }`} src={image}/>
                 <div
                   className={`p-2 rounded-md max-w-[80%] ${
                     msg.sender === "user"
