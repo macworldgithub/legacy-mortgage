@@ -1,13 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Button, Input, Spin } from "antd";
-import {
-  MessageOutlined,
-  SendOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { MessageOutlined, SendOutlined, CloseOutlined } from "@ant-design/icons";
 import { SERVER_URL } from "../../config";
 import image from "../../../public/pic.jpeg";
 import axios from "axios";
+import "./ChatWidget.css";  // Make sure to create and import the CSS file
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,10 +60,10 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed z-50">
-      {/* Toggle Button on the Right Side, Vertically Centered */}
+    <div className="ai-chat-widget-wrapper fixed z-50">
+      {/* Toggle Button at Bottom-Right */}
       {!isOpen && (
-        <div className="fixed top-1/2 right-0 -translate-y-1/2 z-50">
+        <div className="fixed bottom-4 right-0">
           <Button
             type="primary"
             icon={<MessageOutlined />}
@@ -82,7 +79,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Chat Widget at Bottom-Right, Visible on All Screens */}
+      {/* Chat Widget */}
       {isOpen && (
         <div className="fixed bottom-6 right-6 w-[90vw] max-w-sm bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200 animate-fade-in z-50">
           <div className="flex justify-between items-center bg-blue-600 text-white p-3">
@@ -93,7 +90,7 @@ export default function ChatWidget() {
             />
           </div>
 
-          <div className="h-60 md:h-80 p-3 space-y-6 overflow-y-auto custom-scrollbar">
+          <div className="h-60 sm:h-72 md:h-80 p-3 space-y-6 overflow-y-auto custom-scrollbar">
             {messages.map((msg, index) => (
               <div key={index}>
                 <div className="space-y-2 gap-2 flex">
@@ -102,7 +99,7 @@ export default function ChatWidget() {
                       msg.sender === "user" ? "hidden" : "block"
                     }`}
                     src={image}
-                    alt="bot"
+                    alt="Bot Avatar"
                   />
                   <div
                     className={`p-2 rounded-md max-w-[80%] ${

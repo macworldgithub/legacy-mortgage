@@ -1,0 +1,20 @@
+/* Ensure widget is always visible regardless of screen size */
+.ai-chat-widget-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    position: fixed !important;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+  }
+  
+  @media (max-width: 767px) {
+    .ai-chat-widget-wrapper {
+      display: block !important;
+    }
+  
+    .ai-chat-widget-wrapper .ant-btn {
+      display: flex !important;
+    }
+  }
+  
