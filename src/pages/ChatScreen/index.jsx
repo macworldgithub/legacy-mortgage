@@ -64,9 +64,9 @@ export default function ChatWidget() {
 
   return (
     <div className="fixed z-50">
-      {/* Toggle Button at Bottom-Right */}
+      {/* Toggle Button on the Right Side, Vertically Centered */}
       {!isOpen && (
-        <div className="fixed bottom-4 right-0">
+        <div className="fixed top-1/2 right-0 -translate-y-1/2 z-50">
           <Button
             type="primary"
             icon={<MessageOutlined />}
@@ -81,12 +81,10 @@ export default function ChatWidget() {
           </Button>
         </div>
       )}
-
-      {/* Chat Widget */}
+  
+      {/* Chat Widget Bottom-Right */}
       {isOpen && (
-        // <div className="fixed bottom-4 right-4 w-[90vw] sm:w-96 bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200 animate-fade-in z-50">
         <div className="fixed bottom-6 right-6 w-[90vw] max-w-sm bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200 animate-fade-in z-50">
-
           <div className="flex justify-between items-center bg-blue-600 text-white p-3">
             <span className="font-semibold">Live Chat</span>
             <CloseOutlined
@@ -94,9 +92,9 @@ export default function ChatWidget() {
               onClick={() => setIsOpen(false)}
             />
           </div>
-
+  
           <div className="h-60 sm:h-72 md:h-80 p-3 space-y-6 overflow-y-auto custom-scrollbar">
-          {messages.map((msg, index) => (
+            {messages.map((msg, index) => (
               <div key={index}>
                 <div className="space-y-2 gap-2 flex">
                   <img
@@ -104,6 +102,7 @@ export default function ChatWidget() {
                       msg.sender === "user" ? "hidden" : "block"
                     }`}
                     src={image}
+                    alt="bot"
                   />
                   <div
                     className={`p-2 rounded-md max-w-[80%] ${
@@ -115,7 +114,7 @@ export default function ChatWidget() {
                     dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
                   ></div>
                 </div>
-
+  
                 {msg.showButtons && (
                   <div className="flex space-x-2 mt-3">
                     <Button
@@ -134,7 +133,7 @@ export default function ChatWidget() {
                 )}
               </div>
             ))}
-
+  
             {loading && (
               <div className="flex items-center space-x-2 p-2 rounded-md max-w-[80%] bg-gray-200 text-black animate-pulse">
                 <Spin size="small" />
@@ -143,7 +142,7 @@ export default function ChatWidget() {
             )}
             <div ref={messagesEndRef} />
           </div>
-
+  
           <div className="p-3 flex items-center border-t bg-gray-100">
             <Input
               placeholder="Type a message..."
@@ -165,9 +164,8 @@ export default function ChatWidget() {
       )}
     </div>
   );
+  
 }
-
-
 
 
 // import { useState, useRef, useEffect } from "react";
