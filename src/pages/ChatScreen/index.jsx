@@ -22,7 +22,6 @@ export default function ChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // 🔹 Link parser that turns URLs into clickable <a> tags
   function parseLinks(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, (url) => {
@@ -64,19 +63,30 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed z-50">
+      {/* Toggle Button at Bottom-Right */}
       {!isOpen && (
-        <Button
-          type="primary"
-          shape="circle"
-          icon={<MessageOutlined style={{ fontSize: "1.7rem" }} />}
-          className="shadow-lg hover:scale-110 transition-all duration-300 !w-16 !h-16 flex items-center justify-center"
-          onClick={() => setIsOpen(true)}
-        />
+        <div className="fixed bottom-4 right-0">
+          <Button
+            type="primary"
+            icon={<MessageOutlined />}
+            className="rounded-l-none rounded-r-none !h-32 w-12 text-xs flex flex-col justify-center items-center whitespace-nowrap"
+            style={{
+              writingMode: "vertical-rl",
+              textOrientation: "mixed",
+            }}
+            onClick={() => setIsOpen(true)}
+          >
+            How can I help?
+          </Button>
+        </div>
       )}
 
+      {/* Chat Widget */}
       {isOpen && (
-        <div className="w-96 bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200 animate-fade-in">
+        // <div className="fixed bottom-4 right-4 w-[90vw] sm:w-96 bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200 animate-fade-in z-50">
+        <div className="fixed bottom-6 right-6 w-[90vw] max-w-sm bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200 animate-fade-in z-50">
+
           <div className="flex justify-between items-center bg-blue-600 text-white p-3">
             <span className="font-semibold">Live Chat</span>
             <CloseOutlined
@@ -85,8 +95,8 @@ export default function ChatWidget() {
             />
           </div>
 
-          <div className="h-72 p-3 space-y-6 overflow-y-auto custom-scrollbar">
-            {messages.map((msg, index) => (
+          <div className="h-60 sm:h-72 md:h-80 p-3 space-y-6 overflow-y-auto custom-scrollbar">
+          {messages.map((msg, index) => (
               <div key={index}>
                 <div className="space-y-2 gap-2 flex">
                   <img
@@ -156,6 +166,8 @@ export default function ChatWidget() {
     </div>
   );
 }
+
+
 
 
 // import { useState, useRef, useEffect } from "react";
