@@ -143,6 +143,12 @@
     width: 16px;
     height: 16px;
   }
+
+  .chat-popup {
+    width: 90%;
+    right: 5%;
+    bottom: 15px;
+  }
 }
 
 /* Chat Popup */
@@ -151,7 +157,7 @@
   bottom: 20px;
   right: 20px;
   width: 360px;
-  max-height: 600px;
+  max-height: 80vh; /* Ensures it doesn't grow endlessly */
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -170,6 +176,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 /* Close Button */
@@ -178,20 +185,22 @@
   font-size: 18px;
 }
 
-/* Messages Area */
+/* Messages Area (Scrollable) */
 .chat-popup-messages {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
   background-color: #f9f9f9;
+  scroll-behavior: smooth;
 }
 
-/* Input Area */
+/* Input Area (Fixed at bottom) */
 .chat-popup-input {
   display: flex;
   padding: 10px;
   border-top: 1px solid #eee;
   background: #fff;
+  flex-shrink: 0;
 }
 
 /* Send Button */
