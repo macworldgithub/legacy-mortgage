@@ -94,11 +94,12 @@ export default function ChatWidget() {
                     alt="Bot Avatar"
                   />
                   <div
-                    className={`p-2 rounded-md max-w-[80%] ${
-                      msg.sender === "user"
-                        ? "bg-blue-500 text-white ml-auto"
-                        : "bg-gray-200 text-black"
-                    }`}
+  className={`p-2 rounded-md max-w-[80%] ${
+    msg.sender === "user"
+      ? "user-message-bubble ml-auto"
+      : "bg-gray-200 text-black"
+  }`}
+
                     style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
                     dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
                   ></div>
