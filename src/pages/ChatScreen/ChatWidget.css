@@ -1,10 +1,10 @@
-/* Wrapper */
+/* Chat Widget Wrapper */
 .ai-chat-widget-wrapper {
   position: fixed;
   z-index: 9999;
 }
 
-/* Button Container */
+/* Chat Button Container */
 .chat-button-container {
   position: fixed;
   top: 50%;
@@ -127,8 +127,31 @@
   }
 }
 
-/* Mobile Responsiveness */
+/* Chat Popup (Fixed Height Layout) */
+.chat-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  height: 500px; /* Fixed height for desktop */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+/* Responsive Popup */
 @media (max-width: 768px) {
+  .chat-popup {
+    width: 90%;
+    right: 5%;
+    bottom: 15px;
+    height: 70vh; /* Fixed height on mobile */
+  }
+
   .chat-button {
     height: 40px;
     min-width: 120px;
@@ -143,31 +166,9 @@
     width: 16px;
     height: 16px;
   }
-
-  .chat-popup {
-    width: 90%;
-    right: 5%;
-    bottom: 15px;
-  }
 }
 
-/* Chat Popup */
-.chat-popup {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 360px;
-  max-height: 80vh; /* Ensures it doesn't grow endlessly */
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 10000;
-}
-
-/* Header */
+/* Chat Header */
 .chat-popup-header {
   background: linear-gradient(135deg, gold, orange);
   color: #333;
@@ -177,15 +178,16 @@
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
+  height: 50px;
 }
 
-/* Close Button */
+/* Close Icon */
 .chat-popup-close {
   cursor: pointer;
   font-size: 18px;
 }
 
-/* Messages Area (Scrollable) */
+/* Chat Messages Area (scrollable) */
 .chat-popup-messages {
   flex: 1;
   padding: 16px;
@@ -194,7 +196,7 @@
   scroll-behavior: smooth;
 }
 
-/* Input Area (Fixed at bottom) */
+/* Chat Input */
 .chat-popup-input {
   display: flex;
   padding: 10px;
