@@ -21,13 +21,12 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: 'src/pages/ChatScreen/widget-entry.jsx', // <-- your new entry
+      entry: 'src/pages/ChatScreen/widget-entry.jsx',
       name: 'BikeChatWidget',
       fileName: 'bike-chat-widget',
-      formats: ['iife'], // Important: 'iife' for script inclusion
+      formats: ['iife'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
       output: {
         globals: {
           react: 'React',
