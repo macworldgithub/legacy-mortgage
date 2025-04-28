@@ -1,4 +1,4 @@
-/* Ensure widget is always visible regardless of screen size */
+/* Ensure widget is always visible regardless of screen size
 .ai-chat-widget-wrapper {
     display: block !important;
     visibility: visible !important;
@@ -16,5 +16,185 @@
     .ai-chat-widget-wrapper .ant-btn {
       display: flex !important;
     }
+  }
+   */
+
+   .ai-chat-widget-wrapper {
+    position: fixed;
+    z-index: 9999;
+  }
+  
+  /* Modern Yellow Button Container */
+  .chat-button-container {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%) translateX(100%);
+    transition: all 0.3s ease;
+    animation: slideIn 0.5s ease-out forwards;
+    animation-delay: 1s;
+    z-index: 9999;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-50%) translateX(100%);
+    }
+    to {
+      transform: translateY(-50%) translateX(0);
+    }
+  }
+  
+  .chat-button {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border: none;
+    border-radius: 24px 0 0 24px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    height: 48px;
+    width: auto;
+    min-width: 140px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .chat-button:hover {
+    transform: translateX(-8px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #FFE44D, #FFB833);
+  }
+  
+  .chat-button-container:hover {
+    transform: translateY(-50%) translateX(-8px);
+  }
+  
+  .chat-button:active {
+    transform: translateX(-4px);
+  }
+  
+  .chat-button-icon {
+    color: #333;
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+  
+  .chat-button:hover .chat-button-icon {
+    transform: scale(1.1);
+  }
+  
+  .chat-button-text {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  
+  /* Shine Animation */
+  .chat-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+  }
+  
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(100%) rotate(45deg);
+    }
+  }
+  
+  /* Pulse Animation */
+  .chat-button-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 32px 0 0 32px;
+    opacity: 0;
+    animation: pulse 2s infinite;
+    z-index: -1;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: translateY(-50%) scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateY(-50%) scale(1.1);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(-50%) scale(1);
+      opacity: 0;
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 768px) {
+    .chat-button {
+      height: 40px;
+      min-width: 120px;
+      padding: 10px 14px;
+    }
+    .chat-button-text {
+      font-size: 13px;
+    }
+    .chat-button-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  .chat-popup-header {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .custom-send-button {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border: none;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+  
+  .custom-send-button:hover {
+    background: linear-gradient(135deg, #FFE44D, #FFB833);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .custom-send-button:active {
+    transform: translateY(0);
+  }
+  
+  .custom-send-button.ant-btn > span {
+    color: #333;
+  }
+  
+  .custom-send-button .anticon {
+    color: #333;
   }
   
