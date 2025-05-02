@@ -62,7 +62,6 @@ export default function ChatWidget() {
   return (
     
     <div className="ai-chat-widget-wrapper">
-      <h1>hllo</h1>
       {/* Modern Yellow Button */}
       {!isOpen && (
         <div className="chat-button-container" onClick={() => setIsOpen(true)}>
