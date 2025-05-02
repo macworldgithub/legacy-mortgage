@@ -23,7 +23,7 @@ export default defineConfig({
     lib: {
       entry: 'src/pages/ChatScreen/widget-entry.jsx',
       name: 'BikeChatWidget',
-      fileName: 'bike-chat-widget',
+      fileName: 'car-chat-widget',
       formats: ['iife'],
     },
     rollupOptions: {
