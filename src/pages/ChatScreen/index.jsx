@@ -148,6 +148,10 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
+          <div className="powered-by-strip">
+            Powered by <a href="https://omnisuiteai.com/" target="_blank" rel="noopener noreferrer">OmniSuiteAI</a>
+          </div>
+
           <div className="chat-popup-input">
             <Input
               placeholder="Type a message..."

@@ -190,6 +190,30 @@
   scroll-behavior: smooth;
 }
 
+/* Powered by Strip */
+.powered-by-strip {
+  background: #F5F5F5;
+  color: #666666;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  padding: 6px 0;
+  border-top: 1px solid #E0E0E0;
+  flex-shrink: 0;
+}
+
+.powered-by-strip a {
+  color: #C8102E;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.powered-by-strip a:hover {
+  color: #A00D26;
+  text-decoration: underline;
+}
+
 /* Chat Input */
 .chat-popup-input {
   display: flex;
