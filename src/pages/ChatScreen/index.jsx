@@ -10,7 +10,7 @@ export default function ChatWidget() {
   const widgetId = "pakken-hamazda"; // Hardcoded widgetId
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! How can I assist you?", sender: "bot", showButtons: false },
+    { text: "Hi there! I’m your AI-powered assistant, ready to help you find the perfect Mazda or Used Car. I can even book a service whenever you need, just let me know how I can assist!", sender: "bot", showButtons: false },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
