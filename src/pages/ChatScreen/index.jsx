@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Button, Input, Spin } from "antd";
+import { Button, Input, Spin, DatePicker } from "antd";
 import { SendOutlined, CloseOutlined } from "@ant-design/icons";
 import { SERVER_URL } from "../../config";
 import image from "../../../public/pic.jpeg";
@@ -7,34 +7,35 @@ import axios from "axios";
 import "./ChatWidget.css";
 
 export default function ChatWidget() {
-  const widgetId = "pakken-hamazda"; // Hardcoded widgetId
+  const widgetId = "mortgage";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hi there! I’m your AI-powered assistant, ready to help you find the perfect Mazda or Used Car. I can even book a service whenever you need, just let me know how I can assist!", sender: "bot", showButtons: false },
+    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [showAppointmentPicker, setShowAppointmentPicker] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  }, [messages, loading, showAppointmentPicker]);
 
   const handleOpenChat = async () => {
     setIsOpen(true);
     window.parent.postMessage(
       {
-        event: 'iframeButtonClick',
+        event: "iframeButtonClick",
       },
-      '*'
+      "*"
     );
-    let userIP = '';
+    let userIP = "";
     try {
-      const ipRes = await axios.get('https://api64.ipify.org?format=json');
+      const ipRes = await axios.get("https://api64.ipify.org?format=json");
       userIP = ipRes.data.ip;
-      console.log(userIP);
     } catch (e) {
-      console.error('IP fetch failed', e);
+      console.error("IP fetch failed", e);
     }
     try {
       await axios.post(`https://widgetsanalytics.vercel.app/api/track-visitor`, {
@@ -51,36 +52,90 @@ export default function ChatWidget() {
   function parseLinks(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" style="color: #C8102E; text-decoration: underline;">${url}</a>`;
+      return `<a href="${url}" target="_blank" style="color: #DEA74E; text-decoration: underline;">${url}</a>`;
     });
   }
 
   const handleSend = async () => {
     if (input.trim() === "") return;
 
-    const newMessages = [...messages, { text: input, sender: "user" }];
+    const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
 
+    const requestBody = { query: input };
+    if (sessionId) requestBody.session_id = sessionId;
+
     try {
-      const response = await axios.post(`${SERVER_URL}/query`, {
-        query: input,
-      });
-      setMessages([
-        ...newMessages,
-        {
-          text: response.data.message,
-          sender: "bot",
-          showButtons: response.data.vehicleDetails ? true : false,
-        },
-      ]);
+      const response = await axios.post(`${SERVER_URL}/query`, requestBody);
+      const newMessage = {
+        text: response.data.message,
+        sender: "bot",
+        showButtons: response.data.message.toLowerCase().includes("preferred day") || 
+                     response.data.message.toLowerCase().includes("preferred time"),
+      };
+      setMessages([...newMessages, newMessage]);
+      setSessionId(response.data.session_id);
+      if (newMessage.showButtons) {
+        setShowAppointmentPicker(true);
+      } else {
+        setShowAppointmentPicker(false);
+      }
     } catch (error) {
       setMessages([
         ...newMessages,
         {
           text: "Sorry, something went wrong. Please try again.",
           sender: "bot",
+          showButtons: false,
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBookAppointment = async (date) => {
+    if (!sessionId || !date) {
+      setMessages([
+        ...messages,
+        {
+          text: "Please select a date and time for the appointment.",
+          sender: "bot",
+          showButtons: false,
+        },
+      ]);
+      return;
+    }
+
+    setLoading(true);
+    const preferredDay = date.format("YYYY-MM-DD");
+    const preferredTime = date.format("HH:mm");
+
+    try {
+      const response = await axios.post(`${SERVER_URL}/book_appointment`, {
+        session_id: sessionId,
+        preferred_day: preferredDay,
+        preferred_time: preferredTime,
+      });
+      setMessages([
+        ...messages,
+        {
+          text: response.data.message,
+          sender: "bot",
+          showButtons: false,
+        },
+      ]);
+      setShowAppointmentPicker(false);
+    } catch (error) {
+      const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
+      setMessages([
+        ...messages,
+        {
+          text: errorMessage,
+          sender: "bot",
+          showButtons: false,
         },
       ]);
     } finally {
@@ -90,7 +145,6 @@ export default function ChatWidget() {
 
   return (
     <div className="ai-chat-widget-wrapper">
-      {/* Modern Blue Button */}
       {!isOpen && (
         <div className="chat-button-container" onClick={handleOpenChat}>
           <button className="chat-button">
@@ -102,26 +156,16 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Chat Popup */}
       {isOpen && (
         <div className="chat-popup">
           <div className="chat-popup-header">
-            <span>Live Chat</span>
+            <span>Legacy Mortgage Chat</span>
             <CloseOutlined
               className="chat-popup-close"
               onClick={() => setIsOpen(false)}
             />
           </div>
-          <div className="chat-popup-service">
-            <a
-              href="https://www.pakenhammazda.com.au/service/book-a-service"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="service-button"
-            >
-              Book a Service
-            </a>
-          </div>
+        
           <div className="chat-popup-messages">
             {messages.map((msg, index) => (
               <div key={index} className="message-wrapper">
@@ -138,33 +182,44 @@ export default function ChatWidget() {
                 ></div>
               </div>
             ))}
-
+            {showAppointmentPicker && (
+              <div className="message-wrapper">
+                <div className="bot-message date-picker-container">
+                  <DatePicker
+                    showTime
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder="Select date and time"
+                    onOk={handleBookAppointment}
+                    popupClassName="custom-date-picker"
+                  />
+                </div>
+              </div>
+            )}
             {loading && (
               <div className="loading-message">
                 <Spin size="small" />
-                <span>Searching Inventory...</span>
+                <span>Processing...</span>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
-
           <div className="powered-by-strip">
             Powered by <a href="https://omnisuiteai.com/" target="_blank" rel="noopener noreferrer">OmniSuiteAI</a>
           </div>
-
           <div className="chat-popup-input">
             <Input
               placeholder="Type a message..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onPressEnter={handleSend}
+              disabled={showAppointmentPicker}
             />
             <Button
               shape="circle"
               icon={<SendOutlined />}
               className="custom-send-button"
               onClick={handleSend}
-              disabled={loading}
+              disabled={loading || showAppointmentPicker}
             />
           </div>
         </div>
