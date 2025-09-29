@@ -526,6 +526,7 @@ import { SERVER_URL } from "../../config";
 import image from "../../../public/pic.jpeg";
 import axios from "axios";
 import "./ChatWidget.css";
+import moment from "moment"; // Ensure Moment.js is imported
 
 export default function ChatWidget() {
   const widgetId = "mortgage";
@@ -602,8 +603,9 @@ export default function ChatWidget() {
       const newMessage = {
         text: response.data.message,
         sender: "bot",
-        showButtons: response.data.message.toLowerCase().includes("preferred day") || 
-                     response.data.message.toLowerCase().includes("preferred time"),
+        showButtons:
+          response.data.message.toLowerCase().includes("preferred day") ||
+          response.data.message.toLowerCase().includes("preferred time"),
       };
       setMessages([...newMessages, newMessage]);
       setSessionId(response.data.session_id);
@@ -627,11 +629,24 @@ export default function ChatWidget() {
   };
 
   const handleConfirm = async () => {
-    if (!sessionId || !selectedDate) {
+    if (!sessionId) {
       setMessages([
         ...messages,
         {
-          text: "Please select a date and time for the appointment.",
+          text: "Session expired. Please start a new conversation.",
+          sender: "bot",
+          showButtons: false,
+        },
+      ]);
+      setShowAppointmentPicker(false);
+      return;
+    }
+
+    if (!selectedDate) {
+      setMessages([
+        ...messages,
+        {
+          text: "Please select a date for your appointment.",
           sender: "bot",
           showButtons: false,
         },
@@ -652,38 +667,26 @@ export default function ChatWidget() {
     }
 
     setLoading(true);
-    let date;
+    let preferredDay, preferredTime;
+
+    if (isMobile) {
+      const dateTime = selectedDate.clone().set({
+        hour: selectedTime.hour(),
+        minute: selectedTime.minute(),
+      });
+      preferredDay = dateTime.format("YYYY-MM-DD");
+      preferredTime = dateTime.format("HH:mm");
+    } else {
+      preferredDay = selectedDate.format("YYYY-MM-DD");
+      preferredTime = selectedDate.format("HH:mm");
+    }
+
     try {
-      date = isMobile
-        ? selectedDate.clone().set({
-            hour: selectedTime.hour(),
-            minute: selectedTime.minute(),
-          })
-        : selectedDate;
-
-      const preferredDay = date.format("YYYY-MM-DD");
-      const preferredTime = date.format("HH:mm");
-
-      // Log payload for debugging
-      console.log("Booking appointment with payload:", {
+      const response = await axios.post(`${SERVER_URL}/book_appointment`, {
         session_id: sessionId,
         preferred_day: preferredDay,
         preferred_time: preferredTime,
       });
-
-      const response = await axios.post(
-        `${SERVER_URL}/book_appointment`,
-        {
-          session_id: sessionId,
-          preferred_day: preferredDay,
-          preferred_time: preferredTime,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          timeout: 10000, // 10s timeout to avoid hanging
-        }
-      );
-
       setMessages([
         ...messages,
         {
@@ -696,14 +699,7 @@ export default function ChatWidget() {
       setSelectedDate(null);
       setSelectedTime(null);
     } catch (error) {
-      console.error("Appointment booking error:", {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data,
-      });
-      const errorMessage =
-        error.response?.data?.detail ||
-        `Error booking appointment: ${error.message}. Please try again.`;
+      const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
       setMessages([
         ...messages,
         {
@@ -739,7 +735,7 @@ export default function ChatWidget() {
               onClick={() => setIsOpen(false)}
             />
           </div>
-        
+
           <div className="chat-popup-messages">
             {messages.map((msg, index) => (
               <div key={index} className="message-wrapper">
@@ -773,6 +769,7 @@ export default function ChatWidget() {
                         size="small"
                         onClick={handleConfirm}
                         style={{ marginTop: 8, width: "100%" }}
+                        disabled={!selectedDate}
                       >
                         Confirm
                       </Button>
@@ -796,6 +793,7 @@ export default function ChatWidget() {
                         size="small"
                         onClick={handleConfirm}
                         style={{ marginTop: 8 }}
+                        disabled={!selectedDate || !selectedTime}
                       >
                         Confirm
                       </Button>
