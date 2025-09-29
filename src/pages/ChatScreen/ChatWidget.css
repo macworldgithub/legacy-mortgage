@@ -1,4 +1,4 @@
-.ai-chat-widget-wrapper {
+/* .ai-chat-widget-wrapper {
   position: fixed;
   z-index: 9999;
   font-family: 'Roboto', sans-serif;
@@ -296,4 +296,444 @@
 .custom-date-picker {
   z-index: 10001 !important;
 }
+ */
 
+ .ai-chat-widget-wrapper {
+  position: fixed;
+  z-index: 9999;
+  font-family: 'Roboto', sans-serif;
+}
+
+.chat-button-container {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translateX(100%);
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease-out forwards;
+  animation-delay: 1s;
+  z-index: 9999;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-50%) translateX(100%);
+  }
+  100% {
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+.chat-button {
+  background: #DEA74E;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 48px;
+  width: auto;
+  min-width: 140px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-button:hover {
+  background: #c68b3a;
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.chat-button:active {
+  transform: translateX(-2px);
+}
+
+.chat-button-icon {
+  color: #FFFFFF;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.chat-button:hover .chat-button-icon {
+  transform: scale(1.1);
+}
+
+.chat-button-text {
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.chat-button::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
+.chat-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  height: 450px;
+  background: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+@media (max-width: 768px) {
+  .chat-popup {
+    width: 90%;
+    right: 5%;
+    bottom: 15px;
+    height: 70vh;
+  }
+
+  .chat-button {
+    height: 40px;
+    min-width: 120px;
+    padding: 10px 14px;
+  }
+
+  .chat-button-text {
+    font-size: 13px;
+  }
+
+  .chat-button-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.chat-popup-header {
+  background: #DEA74E;
+  color: #FFFFFF;
+  font-weight: 500;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  height: 40px;
+}
+
+.chat-popup-close {
+  cursor: pointer;
+  font-size: 18px;
+  color: #FFFFFF;
+}
+
+.chat-popup-messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #F5F5F5;
+  scroll-behavior: smooth;
+}
+
+.powered-by-strip {
+  background: #F5F5F5;
+  color: #666666;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  padding: 6px 0;
+  borderframe-top: 1px solid #E0E0E0;
+  flex-shrink: 0;
+}
+
+.powered-by-strip a {
+  color: #DEA74E;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.powered-by-strip a:hover {
+  color: #c68b3a;
+  text-decoration: underline;
+}
+
+.chat-popup-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #E0E0E0;
+  background: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.custom-send-button {
+  background: #DEA74E;
+  border: none;
+  color: #FFFFFF;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.custom-send-button:hover {
+  background: #c68b3a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.custom-send-button:active {
+  transform: translateY(0);
+}
+
+.custom-send-button .anticon {
+  color: #FFFFFF;
+}
+
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.bot-avatar {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+
+.bot-message,
+.user-message {
+  padding: 10px 14px;
+  border-radius: 8px;
+  max-width: 80%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.bot-message {
+  background: #E0E0E0;
+  color: #333333;
+}
+
+.user-message {
+  background: #DEA74E;
+  color: #FFFFFF;
+  font-weight: 500;
+  margin-left: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.date-picker-container {
+  background: #E0E0E0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+.loading-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  font-size: 13px;
+  color: #666666;
+}
+
+.ant-picker {
+  width: 100%;
+  max-width: 250px;
+}
+
+.custom-date-picker {
+  z-index: 10001 !important;
+  background: #E0E0E0 !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+@media (min-width: 769px) {
+  .custom-date-picker .ant-picker-panel-container {
+    background: #E0E0E0 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    box-shadow: none !important;
+  }
+
+  .custom-date-picker .ant-picker-panel {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .custom-date-picker .ant-picker-ok {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 8px !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn {
+    background: #DEA74E !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 500 !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn:hover {
+    background: #c68b3a !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .ant-btn-primary {
+    background: #DEA74E !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+    max-width: 250px !important;
+  }
+
+  .ant-btn-primary:hover {
+    background: #c68b3a !important;
+    transform: translateY(-2px) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-date-picker {
+    width: 90vw !important;
+    max-width: 90% !important;
+    left: 5% !important;
+    right: 5% !important;
+    transform: translateX(0) !important;
+  }
+
+  .custom-date-picker .ant-picker-panel-container {
+    width: 100% !important;
+    max-width: 90vw !important;
+    margin: 0 auto !important;
+    background: #E0E0E0 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+  }
+
+  .custom-date-picker .ant-picker-panel {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .custom-date-picker .ant-picker-content {
+    width: 100% !important;
+    font-size: 12px !important;
+  }
+
+  .custom-date-picker .ant-picker-cell {
+    padding: 2px !important;
+  }
+
+  .custom-date-picker .ant-picker-time-panel {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+  }
+
+  .custom-date-picker .ant-picker-time-panel-column {
+    width: 80px !important;
+    font-size: 12px !important;
+    overflow-y: auto !important;
+    max-height: 150px !important;
+    margin: 0 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .custom-date-picker .ant-picker-time-panel-column > li {
+    padding: 4px 0 !important;
+    text-align: center !important;
+  }
+
+  .custom-date-picker .ant-picker-ok {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 8px 0 !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn {
+    background: #DEA74E !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 500 !important;
+  }
+
+  .mobile-date-time-picker .ant-btn-primary {
+    margin: 8px auto 0 !important;
+    width: 100% !important;
+    max-width: 120px !important;
+    background: #DEA74E !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 6px 16px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-date-time-picker .ant-btn-primary:hover {
+    background: #c68b3a !important;
+    transform: translateY(-2px) !important;
+  }
+}
+
+.mobile-date-time-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-date-time-picker .ant-picker {
+  width: 100% !important;
+}
