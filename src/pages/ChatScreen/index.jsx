@@ -846,9 +846,7 @@ import moment from "moment";
 export default function ChatWidget() {
   const widgetId = "mortgage";
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { text: "How can I help you?", sender: "bot", showButtons: false },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
@@ -856,6 +854,7 @@ export default function ChatWidget() {
   const [isMobile, setIsMobile] = useState(false);
   const [form] = Form.useForm();
   const messagesEndRef = useRef(null);
+  const isFirstMessage = useRef(true);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -867,6 +866,8 @@ export default function ChatWidget() {
 
   const handleOpenChat = async () => {
     setIsOpen(true);
+    setMessages([{ text: "How can I help you?", sender: "bot", showButtons: false }]);
+    isFirstMessage.current = false;
     window.parent.postMessage({ event: "iframeButtonClick" }, "*");
     let userIP = "";
     try {
