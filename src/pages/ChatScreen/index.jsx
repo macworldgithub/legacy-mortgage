@@ -955,7 +955,6 @@ export default function ChatWidget() {
         preferred_time: preferredTime,
         full_name: values.full_name,
         email: values.email,
-        phone: values.phone,
       });
       setMessages([
         ...messages,
@@ -1042,13 +1041,6 @@ export default function ChatWidget() {
                       rules={[{ required: true, message: "Please enter a valid email", type: "email" }]}
                     >
                       <Input placeholder="Enter your email" />
-                    </Form.Item>
-                    <Form.Item
-                      name="phone"
-                      label="Phone"
-                      rules={[{ required: true, message: "Please enter your phone number" }]}
-                    >
-                      <Input placeholder="Enter your phone number" />
                     </Form.Item>
                     {!isMobile ? (
                       <Form.Item
